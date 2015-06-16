@@ -183,6 +183,10 @@ class MovieMainPage(KinopoiskPage):
                     if not tag:
                         tag = tds[1].find('div')
                     instance.profit_world = self.prepare_profit(tag.text)
+                elif name == 'режиссер':
+                    directors = value.split(', ')
+                    for director in directors:
+                        instance.directors.append(self.prepare_str(director))
 
         rating = content_info.find('span', attrs={'class': 'rating_ball'})
         if rating:
