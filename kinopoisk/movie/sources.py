@@ -184,9 +184,14 @@ class MovieMainPage(KinopoiskPage):
                         tag = tds[1].find('div')
                     instance.profit_world = self.prepare_profit(tag.text)
                 elif name == 'режиссер':
-                    directors = value.split(', ')
+                    directors = tds[1].contents
                     for director in directors:
-                        instance.directors.append(self.prepare_str(director))
+                        href = director.attrs.get('href')
+                        id = re.search(r'/name/(\d+)', href)
+                        if id:
+                            director_id = id.group(1)
+                            instance.directors.append({'name': self.prepare_str(director.text), 'id': director_id})
+
 
         rating = content_info.find('span', attrs={'class': 'rating_ball'})
         if rating:
